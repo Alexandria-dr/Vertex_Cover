@@ -1,35 +1,46 @@
 class Graph:
     def __init__(self):
+        """Конструктор графа"""
         self.__Vertexes = {}
         self.__Edges = []
 
     def add_vertex(self, obj):
+        """Додати вершину в множину вершин графа"""
         self.__Vertexes.update(obj._make_dict())
 
     def add_edge(self, obj, id1, id2):
+        """Додати ребро в множину ребер графа"""
         self.__Edges.append(obj)
         self.__Vertexes[id1][0]._add_edge_to_vertex(obj)
         self.__Vertexes[id2][0]._add_edge_to_vertex(obj)
 
     def get_vertexes(self):
+        """Повертає множину вершин графа"""
         return self.__Vertexes
 
     def get_vertexes_id(self):
+        """Повертає список ідентифікаторів вершин"""
         res = []
         for vertex in self.__Vertexes:
             res.append(vertex)
         return res
 
     def get_edges(self):
+        """Повертає множину ребер"""
         return self.__Edges
 
     def get_edges_id(self):
+        """Повертає список ідентифікаторів ребер
+        :return:список id ребер"""
         res = []
         for edge in self.__Edges:
             res.append(edge.get_id())
         return res
 
     def del_vert(self, vertex):
+        """Видаляє з множини вершин графа вершину
+        :param vertex:id вершини
+        :type vertex:int"""
         cdict = self.__Vertexes.copy()
         for i in self.__Vertexes:
             if vertex == i:
@@ -37,6 +48,7 @@ class Graph:
         self.__Vertexes = cdict
 
     def del_edge(self, edge_id):
+        """Видаляє з множини ребер графа ребро"""
         for i in self.__Edges:
             if edge_id == i.get_id():
                 self.__Edges.remove(i)
@@ -44,7 +56,7 @@ class Graph:
     def change_edge(self, id, vid, x, y):
         for edge in self.__Edges:
             if edge.get_id() == id:
-                edge.change_vertex(vid, x, y)
+                edge.change_end(vid, x, y)
 
     def check_edge(self, id1, id2):
         res = []
@@ -62,7 +74,8 @@ class Graph:
             if [el[0], el[1]] not in res and [el[1], el[0]] not in res:
                 res.append(el)
         return res
-    def make_dict_vertexes(self):
+
+    def make_dict_vert_number(self):
         res = {}
         for vertex in self.__Vertexes:
             key = vertex
@@ -70,7 +83,7 @@ class Graph:
             res.update({key: value})
         return res
 
-    class Edge:
+    class _Edge:
         def __init__(self, item_id, x2, y2, x1, y1, name1, name2):
             self.__first_x = x1
             self.__first_y = y1
@@ -83,7 +96,7 @@ class Graph:
         def __repr__(self):
             return f'{self.__id}[{self.__first_name},{self.__second_name}]'
 
-        def change_vertex(self, shape_id, x, y):
+        def change_end(self, shape_id, x, y):
             if shape_id == self.__first_name:
                 self.__first_x = x
                 self.__first_y = y
@@ -111,23 +124,19 @@ class Graph:
         def get_list_vert(self):
             return [self.__first_name, self.__second_name]
 
-    class Vertex:
+    class _Vertex:
         def __init__(self, shape, x, y):
             self.__x = x
             self.__y = y
             self.__id = shape
             self.__list_edge = []
             self.__dict = {}
-            self.__create_dict()
-
-
-        def __str__(self):
-            return f'x={self.__x}, y={self.__y}, name={self.__id};'
+            self.__update_dict()
 
         def __repr__(self):
             return f'{self.__id}({self.__x},{self.__y})[{self.__list_edge}];'
 
-        def __create_dict(self):
+        def __update_dict(self):
             self.__dict.update({self.__id: [self, self.__x, self.__y, self.__list_edge]})
 
         def _add_edge_to_vertex(self, edge):
@@ -137,14 +146,8 @@ class Graph:
             self.__x = x
             self.__y = y
 
-        def GetX(self):
-            return self.__x
-
-        def GetY(self):
-            return self.__y
-
         def _make_dict(self):
-            self.__create_dict()
+            self.__update_dict()
             return self.__dict
 
         def get_edge(self):
@@ -157,4 +160,3 @@ class Graph:
             for i in self.__list_edge:
                 if edge == i.get_id():
                     self.__list_edge.remove(i)
-            return self.__list_edge

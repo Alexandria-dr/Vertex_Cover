@@ -5,7 +5,9 @@ def greedy(graph, canvas):
     canvas.itemconfig(ALL, fill="red")
     res = []
     list_edges = graph.make_list_vert_ed()
-    dict_vert = graph.make_dict_vertexes()
+    dict_vert = graph.make_dict_vert_number()
+    if not list_edges and not dict_vert:
+        return 'для виконання методу потрібні вершини'
     while list_edges or dict_vert != {}:
         max_value = 0
         max_key = 0
@@ -53,8 +55,8 @@ def approx(graph, canvas):
     canvas.itemconfig(ALL, fill="red")
     if graph.get_edges() == []:
         return 'для виконання цього методу потрібні ребра'
-    for key in graph.make_dict_vertexes():
-        if graph.make_dict_vertexes()[key] == 0:
+    for key in graph.make_dict_vert_number():
+        if graph.make_dict_vert_number()[key] == 0:
             return "не всі вершини з'єднані ребрами"
 
     res = []
