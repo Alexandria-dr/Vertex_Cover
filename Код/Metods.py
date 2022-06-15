@@ -2,6 +2,7 @@ from random import randint
 from tkinter import ALL
 
 def greedy(graph, canvas):
+    """жадібний метод"""
     canvas.itemconfig(ALL, fill="red")
     res = []
     list_edges = graph.make_list_vert_ed()
@@ -11,7 +12,7 @@ def greedy(graph, canvas):
     while list_edges or dict_vert != {}:
         max_value = 0
         max_key = 0
-        for key in dict_vert:
+        for key in dict_vert:   # пошук вершини з найбільшою кількістю ребер
             if max_value <= dict_vert[key]:
                 max_value = dict_vert[key]
                 max_key = key
@@ -21,7 +22,7 @@ def greedy(graph, canvas):
 
         for edge in graph.get_edges():
             edges = edge.get_list_vert()
-            if max_key in edges :
+            if max_key in edges:
                 canvas.itemconfig(edge.get_id(), fill="blue")
 
             if max_key in edges:
@@ -37,7 +38,7 @@ def greedy(graph, canvas):
                         dict_vert.update({edges[0]: dict_vert[edges[0]]-1})
 
         copy_list = list_edges.copy()
-        for edge in list_edges:
+        for edge in list_edges:     #видаляємо ребра пов'язані з вибраною вершиною
             if max_key in edge:
                 copy_list.remove(edge)
         list_edges = copy_list.copy()
@@ -52,6 +53,7 @@ def greedy(graph, canvas):
 
 
 def approx(graph, canvas):
+    """approx-vertex-cover метод"""
     canvas.itemconfig(ALL, fill="red")
     if graph.get_edges() == []:
         return 'для виконання цього методу потрібні ребра'
@@ -62,14 +64,14 @@ def approx(graph, canvas):
     res = []
     list_edges = graph.make_list_vert_ed()
     while list_edges:
-        rand = randint(0, len(list_edges)-1)
+        rand = randint(0, len(list_edges)-1)   #вибираємо випадкове ребро
         del_item = list_edges.pop(rand)
         res.append(del_item)
         copy_list = list_edges.copy()
         for edge in graph.get_edges():
             if del_item[0] in edge.get_list_vert() and del_item[1] in edge.get_list_vert():
                 canvas.itemconfig(edge.get_id(), fill="blue")
-        for vertex in del_item:
+        for vertex in del_item:     #видаляємо ребра, які прилягають до вибраного ребра
             canvas.itemconfig(vertex, fill='blue')
             for edge in list_edges:
                 if vertex in edge:

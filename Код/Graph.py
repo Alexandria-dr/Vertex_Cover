@@ -15,18 +15,21 @@ class Graph:
         self.__Vertexes[id2][0]._add_edge_to_vertex(obj)
 
     def get_vertexes(self):
-        """Повертає множину вершин графа"""
+        """Повертає множину вершин графа
+        :return:словник з вершинами {id:obj, x, y, list of Edge}"""
         return self.__Vertexes
 
     def get_vertexes_id(self):
-        """Повертає список ідентифікаторів вершин"""
+        """Повертає список ідентифікаторів вершин
+        :return:список id вершин"""
         res = []
         for vertex in self.__Vertexes:
             res.append(vertex)
         return res
 
     def get_edges(self):
-        """Повертає множину ребер"""
+        """Повертає множину ребер
+        :return:список об'єктів класу Edge"""
         return self.__Edges
 
     def get_edges_id(self):
@@ -54,11 +57,13 @@ class Graph:
                 self.__Edges.remove(i)
 
     def change_edge(self, id, vid, x, y):
+        """змінити координати кінця ребра"""
         for edge in self.__Edges:
             if edge.get_id() == id:
                 edge.change_end(vid, x, y)
 
     def check_edge(self, id1, id2):
+        """перевіряє чи наявне ребро в графі із заданими ребрами"""
         res = []
         for edge in self.__Edges:
             el = edge.get_list_vert()
@@ -68,6 +73,7 @@ class Graph:
             return True
 
     def make_list_vert_ed(self):
+        """Створює список ребер, з елементами виду [id 1ї вершини, id 2ї вершини]"""
         res = []
         for edge in self.__Edges:
             el = edge.get_list_vert()
@@ -76,6 +82,7 @@ class Graph:
         return res
 
     def make_dict_vert_number(self):
+        """Створює словник вершин виду {id вершини: кількість ребер}"""
         res = {}
         for vertex in self.__Vertexes:
             key = vertex
@@ -97,6 +104,7 @@ class Graph:
             return f'{self.__id}[{self.__first_name},{self.__second_name}]'
 
         def change_end(self, shape_id, x, y):
+            """змінити координати одного з кінців ребра"""
             if shape_id == self.__first_name:
                 self.__first_x = x
                 self.__first_y = y
@@ -105,9 +113,11 @@ class Graph:
                 self.__second_y = y
 
         def get_id(self):
+            """Повертає ідентифікатор ребра"""
             return self.__id
 
         def get_coord(self, id):
+            """Повертає список з координатами"""
             if id == self.__first_name:
                 return [self.__second_x, self.__second_y]
             elif id == self.__second_name:
@@ -116,12 +126,15 @@ class Graph:
                 return [self.__first_x, self.__first_y, self.__second_x, self.__second_y]
 
         def get_id_first(self):
+            """Повертає ідентифікатор першої вершини ребра"""
             return self.__first_name
 
         def get_id_second(self):
+            """Повертає ідентифікатор другої вершини ребра"""
             return self.__second_name
 
         def get_list_vert(self):
+            """Повертає список ідентифікаторів вершин ребра"""
             return [self.__first_name, self.__second_name]
 
     class _Vertex:
@@ -137,26 +150,33 @@ class Graph:
             return f'{self.__id}({self.__x},{self.__y})[{self.__list_edge}];'
 
         def __update_dict(self):
+            """Створення словника для вершини"""
             self.__dict.update({self.__id: [self, self.__x, self.__y, self.__list_edge]})
 
         def _add_edge_to_vertex(self, edge):
+            """Додати до списку ребер вершини нове ребро"""
             self.__list_edge.append(edge)
 
         def changeXY(self, x, y):
+            """змінити координати вершини"""
             self.__x = x
             self.__y = y
 
         def _make_dict(self):
+            """створити та повернути словник вершини"""
             self.__update_dict()
             return self.__dict
 
         def get_edge(self):
+            """повернути список ребер вершини"""
             return self.__list_edge
 
         def get_id(self):
+            """Повернути ідентифікатор вершини"""
             return self.__id
 
         def remove_edge(self, edge):
+            """Видалити ребро із вершини"""
             for i in self.__list_edge:
                 if edge == i.get_id():
                     self.__list_edge.remove(i)
